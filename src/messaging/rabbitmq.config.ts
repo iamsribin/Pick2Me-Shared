@@ -11,8 +11,15 @@ export const ROUTING_KEYS = {
   BOOKING_CANCELLED: 'booking.cancelled',
   PAYMENT_SUCCESS: 'payment.success',
   PAYMENT_FAILED: 'payment.failed',
-  DRIVER_ASSIGNED: 'driver.assigned',
-  DRIVER_LOCATION_UPDATE: 'driver.location.update',
+
+  RIDE_ACCEPTED: 'realtime-booking.ride.accepted',
+  RESPONSE_RIDE_REQUEST: 'realtime-booking.ride.request.response',
+
+  NOTIFY_BOOK_RIDE_DRIVER: 'booking-realtime.booked.ride',
+  NOTIFY_RIDE_COMPLETED: 'booking-realtime.ride.completed',
+
+  NOTIFY_DOCUMENT_EXPIRE:'driver-realtime.document.expire',
+
   USER_WALLET_CREATE: 'user-payment.wallet.create',
   USER_ADDED_REWARD_AMOUNT: 'user-payment.added.reward.amount',
 } as const;

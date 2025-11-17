@@ -15,7 +15,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return await this._model.findById(id).select(projection).exec();
     } catch (error) {
       console.error('Error in findById:', error);
-      return null;
+      throw error
     }
   }
 
@@ -23,8 +23,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
     try {
       return await this._model.findOne(filter).exec();
     } catch (error) {
-      console.error('Error in findOne:', error);
-      return null;
+      throw error
     }
   }
 
@@ -33,7 +32,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return await this._model.find(filter).exec();
     } catch (error) {
       console.error('Error in find:', error);
-      return null;
+      throw error
     }
   }
 
@@ -43,7 +42,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return await created.save();
     } catch (error) {
       console.error('Error in create:', error);
-      return null;
+      throw error
     }
   }
 
@@ -52,7 +51,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return await this._model.findByIdAndUpdate(id, update, { new: true }).exec();
     } catch (error) {
       console.error('Error in update:', error);
-      return null;
+      throw error
     }
   }
 
@@ -62,7 +61,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return !!result;
     } catch (error) {
       console.error('Error in delete:', error);
-      return false;
+      throw error
     }
   }
 
@@ -71,7 +70,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return await this._model.find(filter, projection).lean<T[]>().exec();
     } catch (error) {
       console.error('Error in findMany:', error);
-      return null;
+      throw error
     }
   }
 
@@ -80,7 +79,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return await this._model.findOneAndUpdate(filter, update, { new: true }).lean<T>().exec();
     } catch (error) {
       console.error('Error in updateOne:', error);
-      return null;
+      throw error
     }
   }
 
@@ -90,7 +89,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       return result.deletedCount === 1;
     } catch (error) {
       console.error('Error in deleteOne:', error);
-      return false;
+      throw error
     }
   }
 }

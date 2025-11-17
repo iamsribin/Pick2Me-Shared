@@ -58,30 +58,48 @@ export class RedisService {
     return !!val;
   }
 
-  // DRIVER DETAILS
-  public async setDriverDetails(driverDetails: OnlineDriverDetails, isRide = false, ttlSeconds = 120) {
-    const prefix = isRide ? RIDE_DRIVER_DETAILS_PREFIX : ONLINE_DRIVER_DETAILS_PREFIX;
+  // in ride driver
+  public async setInRideDriverDetails(driverDetails: OnlineDriverDetails, ttlSeconds = 120) {
+    const prefix =RIDE_DRIVER_DETAILS_PREFIX;
     const key = `${prefix}${driverDetails.driverId}`;
     await this.redis.set(key, JSON.stringify(driverDetails), "EX", ttlSeconds);
-    return this.getDriverDetails(driverDetails.driverId, isRide);
   }
 
-  public async getDriverDetails(driverId: string, isRide = false) {
-    const prefix = isRide ? RIDE_DRIVER_DETAILS_PREFIX : ONLINE_DRIVER_DETAILS_PREFIX;
+    public async getInRideDriverDetails(driverId: string) {
+    const prefix = RIDE_DRIVER_DETAILS_PREFIX;
+    const key = `${prefix}${driverId}`;
+    const val = await this.redis.get(key);
+    return val ? (JSON.parse(val) as OnlineDriverDetails) : null;
+  }
+  
+    public async removeInRideDriver(driverId: string) {
+    const prefix = RIDE_DRIVER_DETAILS_PREFIX;
+    const key = `${HEARTBEAT_PREFIX}${driverId}`;
+    const detailsKey = `${prefix}${driverId}`;
+    await this.redis.del([key, detailsKey]);
+    await this.redis.zrem(GEO_KEY_RIDE, driverId);
+  }
+
+  //online driver 
+    public async setOnlineDriverDetails(driverDetails: OnlineDriverDetails, ttlSeconds = 120) {
+    const prefix = ONLINE_DRIVER_DETAILS_PREFIX;
+    const key = `${prefix}${driverDetails.driverId}`;
+    await this.redis.set(key, JSON.stringify(driverDetails), "EX", ttlSeconds);
+  }
+
+    public async getOnlineDriverDetails(driverId: string) {
+    const prefix =ONLINE_DRIVER_DETAILS_PREFIX;
     const key = `${prefix}${driverId}`;
     const val = await this.redis.get(key);
     return val ? (JSON.parse(val) as OnlineDriverDetails) : null;
   }
 
-  public async removeOnlineDriver(driverId: string, isRide = false) {
-    const prefix = isRide ? RIDE_DRIVER_DETAILS_PREFIX : ONLINE_DRIVER_DETAILS_PREFIX;
+    public async removeOnlineDriver(driverId: string) {
+    const prefix =  ONLINE_DRIVER_DETAILS_PREFIX;
     const key = `${HEARTBEAT_PREFIX}${driverId}`;
     const detailsKey = `${prefix}${driverId}`;
     await this.redis.del([key, detailsKey]);
     await this.redis.zrem(GEO_KEY, driverId);
-    if (isRide) {
-      await this.redis.zrem(GEO_KEY_RIDE, driverId);
-    }
   }
 
   // GEO

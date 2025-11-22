@@ -84,20 +84,36 @@
     "@grpc/grpc-js": "^1.14.0",
     "@grpc/proto-loader": "^0.8.0",
     "amqplib": "^0.10.9",
+    "express": "^5.1.0",
     "inversify": "^7.10.4",
     "ioredis": "^5.8.2",
     "mongoose": "^8.19.2",
-    "typeorm": "^0.3.27",
-    "express": "^5.1.0"
+    "typeorm": "^0.3.27"
   },
   "peerDependenciesMeta": {
-    "@grpc/grpc-js": { "optional": true },
-    "@grpc/proto-loader": { "optional": true },
-    "amqplib": { "optional": true },
-    "inversify": { "optional": true },
-    "ioredis": { "optional": true },
-    "mongoose": { "optional": true },
-    "typeorm": { "optional": true },
-    "express": { "optional": true }
+    "@grpc/grpc-js": {
+      "optional": true
+    },
+    "@grpc/proto-loader": {
+      "optional": true
+    },
+    "amqplib": {
+      "optional": true
+    },
+    "inversify": {
+      "optional": true
+    },
+    "ioredis": {
+      "optional": true
+    },
+    "mongoose": {
+      "optional": true
+    },
+    "typeorm": {
+      "optional": true
+    },
+    "express": {
+      "optional": true
+    }
   }
 }

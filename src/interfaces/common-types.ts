@@ -15,9 +15,13 @@ export interface OnlineDriverDetails {
   name: string;
   cancelledRides: number;
   rating: number;
-  vehicleModel?: string;
-  driverPhoto?: string;
-  vehicleNumber?: string;
+  vehicleModel: string;
+  driverPhoto: string;
+  vehicleNumber: string;
+  stripeId?: string;
+  stripeLinkUrl?: string;
+  sessionStart?: number; 
+  lastSeen?: number;
 }
 
 

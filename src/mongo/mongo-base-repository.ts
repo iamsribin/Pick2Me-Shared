@@ -83,6 +83,15 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
     }
   }
 
+  async findOneAndUpdateUpsert(filter: FilterQuery<T>, update: UpdateQuery<T>, options: any = { new: true, upsert: true }): Promise<T | null> {
+  try {
+    return await this._model.findOneAndUpdate(filter, update, options).lean<T>().exec();
+  } catch (error) {
+    console.error('Error in findOneAndUpdateUpsert:', error);
+    throw error;
+  }
+}
+
   async deleteOne(filter: FilterQuery<T>): Promise<boolean> {
     try {
       const result = await this._model.deleteOne(filter);

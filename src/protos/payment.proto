@@ -4,6 +4,7 @@ package payment_package;
 service PaymentService {
   rpc CreateDriverConnectAccount(CreateDriverConnectAccountRequest) returns (CreateDriverConnectAccountResponse);
   rpc GetUserWalletBalanceAndTransactions(GetUserWalletBalanceAndTransactionsReq) returns (GetUserWalletBalanceAndTransactionsRes);
+  rpc CheckDriverOnboardingStatus(CheckDriverOnboardingStatusReq) returns (CheckDriverOnboardingStatusRes);
   
 }
 
@@ -25,4 +26,12 @@ message CreateDriverConnectAccountRequest {
 message CreateDriverConnectAccountResponse {
   string accountId = 1;
   string accountLinkUrl = 2;
+}
+
+message CheckDriverOnboardingStatusReq {
+string driverId = 1;
+}
+
+message CheckDriverOnboardingStatusRes{
+  boolean onboardingStatus = 1;
 }

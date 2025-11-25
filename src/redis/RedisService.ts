@@ -79,8 +79,8 @@ export class RedisService {
     return result > 0;
   }
 
-  public async setHeartbeat(driverId: string): Promise<void> {
-    await this.redis.set(`${HEARTBEAT_PREFIX}${driverId}`, "1", "EX", 120);
+  public async setHeartbeat(driverId: string, ttl: number=120): Promise<void> {
+    await this.redis.set(`${HEARTBEAT_PREFIX}${driverId}`, "1", "EX", ttl);
   }
 
   public async checkHeartbeat(driverId: string): Promise<boolean> {

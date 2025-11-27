@@ -29,8 +29,8 @@ export const realtimeProto = loadPackage("realtime.proto").realtime_package;
 export const paymentProto = loadPackage("payment.proto").payment_package;
 
 
-export const userServiceDescriptor = userProto?.User?.service ?? null;
-export const driverServiceDescriptor = driverProto?.Driver?.service ?? null;
-export const bookingDescriptor = bookingProto?.Booking?.service ?? null;
-export const realtimeServiceDescriptor = realtimeProto?.Realtime?.service ?? null;
+export const userServiceDescriptor = userProto?.UserService?.service ?? null;
+export const driverServiceDescriptor = driverProto?.DriverService?.service ?? null;
+export const bookingDescriptor = bookingProto?.BookingService?.service ?? null;
+export const realtimeServiceDescriptor = realtimeProto?.RealtimeService?.service ?? null;
 export const paymentServiceDescriptor = paymentProto?.PaymentService.service ?? null; 

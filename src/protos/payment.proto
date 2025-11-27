@@ -33,5 +33,5 @@ string driverId = 1;
 }
 
 message CheckDriverOnboardingStatusRes{
-  boolean onboardingStatus = 1;
+  bool onboardingStatus = 1;
 }

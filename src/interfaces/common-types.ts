@@ -24,5 +24,20 @@ export interface OnlineDriverDetails {
   lastSeen?: number;
 }
 
+export interface NearbyDriver {
+  driverId: string;
+  distanceKm: number;
+  latitude: number;
+  longitude: number;
+}
+
+export interface OnlineDriverPreview {
+  driverId: string;
+  lat: number;
+  lng: number;
+  vehicleModel?: string;
+   distanceKm: number;
+  name?: string;
+}
 
 export type IRole = "User"|"Admin"| "Driver"

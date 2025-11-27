@@ -1,7 +1,7 @@
 syntax = "proto3";
 package booking_package;
 
-service Booking {
+service BookingService {
 
   rpc MarkAsPaid (MarkAsPaidRequest) returns (MarkAsPaidRes);
   rpc RollbackPayment (RollbackPaymentRequest) returns (MarkAsPaidRes);

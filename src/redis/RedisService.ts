@@ -7,7 +7,11 @@ import {
   ONLINE_DRIVER_DETAILS_PREFIX,
   SOCKET_PREFIX,
 } from "../constants/redis-keys";
-import { Coordinates, OnlineDriverDetails } from "../interfaces/common-types";
+import {
+  Coordinates,
+  NearbyDriver,
+  OnlineDriverDetails,
+} from "../interfaces/common-types";
 
 export class RedisService {
   private static instance: RedisService | null = null;
@@ -79,13 +83,16 @@ export class RedisService {
     return result > 0;
   }
 
-  public async setHeartbeat(driverId: string, ttl: number=120): Promise<void> {
+  public async setHeartbeat(
+    driverId: string,
+    ttl: number = 120
+  ): Promise<void> {
     await this.redis.set(`${HEARTBEAT_PREFIX}${driverId}`, "1", "EX", ttl);
   }
 
   public async checkHeartbeat(driverId: string): Promise<boolean> {
     const exists = await this.redis.exists(`${HEARTBEAT_PREFIX}${driverId}`);
-    return exists === 1; 
+    return exists === 1;
   }
   //online driver methods
   public async setOnlineDriver(
@@ -118,7 +125,6 @@ export class RedisService {
     const data = await this.redis.hgetall(key);
 
     if (!data || Object.keys(data).length === 0) return null;
-
     const details: OnlineDriverDetails = {
       driverId: data.driverId,
       driverNumber: data.driverNumber,
@@ -166,8 +172,8 @@ export class RedisService {
     longitude: number,
     radiusKm: number,
     limit = 20
-  ): Promise<{ driverId: string; distanceKm: number }[]> {
-    const raw: Array<[string, string]> = (await this.redis.geosearch(
+  ): Promise<NearbyDriver[]> {
+    const raw: any[] = (await this.redis.geosearch(
       GEO_KEY,
       "FROMLONLAT",
       longitude,
@@ -177,16 +183,39 @@ export class RedisService {
       "km",
       "ASC",
       "WITHDIST",
+      "WITHCOORD",
       "COUNT",
       limit
     )) as any;
 
     if (!raw || raw.length === 0) return [];
 
-    return raw.map(([member, distStr]) => ({
-      driverId: member,
-      distanceKm: Number(distStr),
-    }));
-  }
+    return raw
+      .map((entry) => {
+        // expected entry: [ member, distStr, [lonStr, latStr] ]
+        const member = entry[0];
+        const distStr = entry[1];
+        const coordArr = entry[2];
 
+        if (!member || !distStr || !Array.isArray(coordArr)) return null;
+
+        const longitudeParsed = Number(coordArr[0]);
+        const latitudeParsed = Number(coordArr[1]);
+
+        if (
+          !Number.isFinite(longitudeParsed) ||
+          !Number.isFinite(latitudeParsed)
+        ) {
+          return null;
+        }
+
+        return {
+          driverId: String(member),
+          distanceKm: Number(distStr),
+          longitude: longitudeParsed,
+          latitude: latitudeParsed,
+        } as NearbyDriver;
+      })
+      .filter((x): x is NearbyDriver => x !== null);
+  }
 }

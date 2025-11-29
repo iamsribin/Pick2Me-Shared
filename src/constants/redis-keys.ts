@@ -8,3 +8,6 @@ export const DRIVER_REQUEST_PREFIX = "driver:request:";
 export const PROCESSED_PREFIX = "processed:";
 export const LOCK_PREFIX = "lock:booking:";
 export const SOCKET_PREFIX = "socket:user:"
+
+export const RIDE_QUEUE_PREFIX = 'ride:queue:';
+export const RIDE_OFFER_PREFIX = 'ride:offer:';

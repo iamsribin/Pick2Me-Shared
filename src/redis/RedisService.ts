@@ -94,18 +94,25 @@ export class RedisService {
   //   return exists === 1;
   // }
 
-private getHeartbeatKey(driverId: string, inRide = false) {
-  return `${inRide ? IN_RIDE_HEARTBEAT_PREFIX : HEARTBEAT_PREFIX}${driverId}`;
-}
+  private getHeartbeatKey(driverId: string, inRide = false) {
+    return `${inRide ? IN_RIDE_HEARTBEAT_PREFIX : HEARTBEAT_PREFIX}${driverId}`;
+  }
 
-public async setHeartbeat(driverId: string, ttl = 120, inRide = false) {
-  await this.redis.set(this.getHeartbeatKey(driverId, inRide), "1", "EX", ttl);
-}
+  public async setHeartbeat(driverId: string, ttl = 120, inRide = false) {
+    await this.redis.set(
+      this.getHeartbeatKey(driverId, inRide),
+      "1",
+      "EX",
+      ttl
+    );
+  }
 
-public async checkHeartbeat(driverId: string, inRide = false) {
-  const exists = await this.redis.exists(this.getHeartbeatKey(driverId, inRide));
-  return exists === 1;
-}
+  public async checkHeartbeat(driverId: string, inRide = false) {
+    const exists = await this.redis.exists(
+      this.getHeartbeatKey(driverId, inRide)
+    );
+    return exists === 1;
+  }
 
   //online driver methods
   public async setOnlineDriver(
@@ -232,28 +239,58 @@ public async checkHeartbeat(driverId: string, inRide = false) {
       .filter((x): x is NearbyDriver => x !== null);
   }
 
-  public async moveDriverToInRideGeo(driverId: string, location: Coordinates): Promise<void> {
-  await this.redis.zrem(GEO_KEY, driverId);
-
-  await this.redis.geoadd(
-    GEO_KEY_RIDE,
-    location.longitude,
-    location.latitude,
-    driverId
-  );
-}
-
-
-public async moveDriverOutOfInRideGeo(driverId: string, location?: Coordinates): Promise<void> {
-  await this.redis.zrem(GEO_KEY_RIDE, driverId);
-
-  if (location) {
-    await this.redis.geoadd(
-      GEO_KEY,
-      location.longitude,
-      location.latitude,
-      driverId
-    );
+  public async getDriverGeoPosition(
+    driverId: string,
+    fromInRide = false
+  ): Promise<{ latitude: number; longitude: number } | null> {
+    const key = fromInRide ? GEO_KEY_RIDE : GEO_KEY;
+    const pos = await this.redis.geopos(key, driverId);
+    if (!pos || !Array.isArray(pos) || !pos[0]) return null;
+    const lonStr = pos[0][0];
+    const latStr = pos[0][1];
+    if (!lonStr || !latStr) return null;
+    const longitude = Number(lonStr);
+    const latitude = Number(latStr);
+    if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) return null;
+    return { latitude, longitude };
   }
-}
+
+  public async moveDriverToInRideGeo(
+    driverId: string,
+    location?: { latitude: number; longitude: number } | null
+  ): Promise<void> {
+    let loc = location ?? (await this.getDriverGeoPosition(driverId, false));
+
+    if (!loc) {
+      loc = await this.getDriverGeoPosition(driverId, true);
+    }
+
+    const multi = this.redis.multi();
+
+    multi.zrem(GEO_KEY, driverId);
+
+    if (loc) {
+      multi.geoadd(GEO_KEY_RIDE, loc.longitude, loc.latitude, driverId);
+    } else {
+      console.warn("no location found");
+    }
+
+    await multi.exec();
+  }
+
+  public async moveDriverOutOfInRideGeo(
+    driverId: string,
+    location?: Coordinates
+  ): Promise<void> {
+    await this.redis.zrem(GEO_KEY_RIDE, driverId);
+
+    if (location) {
+      await this.redis.geoadd(
+        GEO_KEY,
+        location.longitude,
+        location.latitude,
+        driverId
+      );
+    }
+  }
 }

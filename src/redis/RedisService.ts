@@ -3,9 +3,8 @@ import {
   GEO_KEY,
   GEO_KEY_RIDE,
   HEARTBEAT_PREFIX,
-  RIDE_DRIVER_DETAILS_PREFIX,
+  IN_RIDE_HEARTBEAT_PREFIX,
   ONLINE_DRIVER_DETAILS_PREFIX,
-  SOCKET_PREFIX,
 } from "../constants/redis-keys";
 import {
   Coordinates,
@@ -83,17 +82,31 @@ export class RedisService {
     return result > 0;
   }
 
-  public async setHeartbeat(
-    driverId: string,
-    ttl: number = 120
-  ): Promise<void> {
-    await this.redis.set(`${HEARTBEAT_PREFIX}${driverId}`, "1", "EX", ttl);
-  }
+  // public async setHeartbeat(
+  //   driverId: string,
+  //   ttl: number = 120
+  // ): Promise<void> {
+  //   await this.redis.set(`${HEARTBEAT_PREFIX}${driverId}`, "1", "EX", ttl);
+  // }
 
-  public async checkHeartbeat(driverId: string): Promise<boolean> {
-    const exists = await this.redis.exists(`${HEARTBEAT_PREFIX}${driverId}`);
-    return exists === 1;
-  }
+  // public async checkHeartbeat(driverId: string): Promise<boolean> {
+  //   const exists = await this.redis.exists(`${HEARTBEAT_PREFIX}${driverId}`);
+  //   return exists === 1;
+  // }
+
+private getHeartbeatKey(driverId: string, inRide = false) {
+  return `${inRide ? IN_RIDE_HEARTBEAT_PREFIX : HEARTBEAT_PREFIX}${driverId}`;
+}
+
+public async setHeartbeat(driverId: string, ttl = 120, inRide = false) {
+  await this.redis.set(this.getHeartbeatKey(driverId, inRide), "1", "EX", ttl);
+}
+
+public async checkHeartbeat(driverId: string, inRide = false) {
+  const exists = await this.redis.exists(this.getHeartbeatKey(driverId, inRide));
+  return exists === 1;
+}
+
   //online driver methods
   public async setOnlineDriver(
     driverDetails: OnlineDriverDetails,
@@ -218,4 +231,29 @@ export class RedisService {
       })
       .filter((x): x is NearbyDriver => x !== null);
   }
+
+  public async moveDriverToInRideGeo(driverId: string, location: Coordinates): Promise<void> {
+  await this.redis.zrem(GEO_KEY, driverId);
+
+  await this.redis.geoadd(
+    GEO_KEY_RIDE,
+    location.longitude,
+    location.latitude,
+    driverId
+  );
+}
+
+
+public async moveDriverOutOfInRideGeo(driverId: string, location?: Coordinates): Promise<void> {
+  await this.redis.zrem(GEO_KEY_RIDE, driverId);
+
+  if (location) {
+    await this.redis.geoadd(
+      GEO_KEY,
+      location.longitude,
+      location.latitude,
+      driverId
+    );
+  }
+}
 }

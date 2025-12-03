@@ -14,7 +14,8 @@ export const ROUTING_KEYS = {
 
   RIDE_ACCEPTED: 'realtime-booking.ride.accepted',
   RESPONSE_RIDE_REQUEST: 'realtime-booking.ride.request.response',
-
+  UPDATE_DRIVER_RIDE_COUNT: "realtime-driver.ride.status.update",
+  
   NOTIFY_BOOK_RIDE_DRIVER: 'booking-realtime.booked.ride',
   NOTIFY_RIDE_COMPLETED: 'booking-realtime.ride.completed',
 

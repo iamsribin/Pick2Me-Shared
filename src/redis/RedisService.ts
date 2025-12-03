@@ -171,12 +171,14 @@ export class RedisService {
   }
 
   // online driver geo method
-  public async updateOnlineDriverGeo(
+  public async updateDriverGeo(
     driverId: string,
-    location: Coordinates
+    location: Coordinates,
+    inride = false
   ): Promise<void> {
+    const key = inride ? GEO_KEY_RIDE : GEO_KEY
     await this.redis.geoadd(
-      GEO_KEY,
+      key,
       location.longitude,
       location.latitude,
       driverId

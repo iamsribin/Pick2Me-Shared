@@ -7,17 +7,19 @@ export const EXCHANGES = {
 } as const;
 
 export const ROUTING_KEYS = {
-  BOOKING_CREATED: 'booking.created',
-  BOOKING_CANCELLED: 'booking.cancelled',
-  PAYMENT_SUCCESS: 'payment.success',
-  PAYMENT_FAILED: 'payment.failed',
+  // BOOKING_CREATED: 'booking.created',
+  // BOOKING_CANCELLED: 'booking.cancelled',
+  // PAYMENT_SUCCESS: 'payment.success',
+  // PAYMENT_FAILED: 'payment.failed',
 
   RIDE_ACCEPTED: 'realtime-booking.ride.accepted',
-  RESPONSE_RIDE_REQUEST: 'realtime-booking.ride.request.response',
+  CANCEL_RIDE:'realtime-booking.ride.status.cancel',
+  // RESPONSE_RIDE_REQUEST: 'realtime-booking.ride.request.response',
   UPDATE_DRIVER_RIDE_COUNT: "realtime-driver.ride.status.update",
   
   NOTIFY_BOOK_RIDE_DRIVER: 'booking-realtime.booked.ride',
   NOTIFY_RIDE_COMPLETED: 'booking-realtime.ride.completed',
+  NOTIFY_RIDE_START: 'booking-realtime.ride.start',
 
   NOTIFY_DOCUMENT_EXPIRE:'driver-realtime.document.expire',
 

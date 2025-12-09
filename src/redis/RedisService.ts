@@ -273,6 +273,8 @@ export class RedisService {
 
     if (loc) {
       multi.geoadd(GEO_KEY_RIDE, loc.longitude, loc.latitude, driverId);
+      console.log("add  geo key",);
+      
     } else {
       console.warn("no location found");
     }

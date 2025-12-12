@@ -98,13 +98,31 @@ export class RedisService {
     return `${inRide ? IN_RIDE_HEARTBEAT_PREFIX : HEARTBEAT_PREFIX}${driverId}`;
   }
 
-  public async setHeartbeat(driverId: string, ttl = 120, inRide = false) {
-    await this.redis.set(
-      this.getHeartbeatKey(driverId, inRide),
-      "1",
-      "EX",
-      ttl
-    );
+  public async setHeartbeat(
+    driverId: string,
+    ttl = 120,
+    inRide = false,
+    payload?: Record<string, any>
+  ): Promise<void> {
+    const key = this.getHeartbeatKey(driverId, inRide);
+    const value = payload ? JSON.stringify(payload) : "1";
+    await this.redis.set(key, value, "EX", ttl);
+  }
+
+  public async getHeartbeat(
+    driverId: string,
+    inRide = false
+  ): Promise<any | null> {
+    const key = this.getHeartbeatKey(driverId, inRide);
+    const raw = await this.redis.get(key);
+    if (!raw) return null;
+    if (raw === "1") return { raw: "1" };
+    try {
+      return JSON.parse(raw);
+    } catch (err) {
+      // If parsing fails, return raw string (defensive)
+      return { raw };
+    }
   }
 
   public async checkHeartbeat(driverId: string, inRide = false) {
@@ -176,7 +194,7 @@ export class RedisService {
     location: Coordinates,
     inride = false
   ): Promise<void> {
-    const key = inride ? GEO_KEY_RIDE : GEO_KEY
+    const key = inride ? GEO_KEY_RIDE : GEO_KEY;
     await this.redis.geoadd(
       key,
       location.longitude,
@@ -273,8 +291,7 @@ export class RedisService {
 
     if (loc) {
       multi.geoadd(GEO_KEY_RIDE, loc.longitude, loc.latitude, driverId);
-      console.log("add  geo key",);
-      
+      console.log("add  geo key");
     } else {
       console.warn("no location found");
     }

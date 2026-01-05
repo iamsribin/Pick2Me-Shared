@@ -1,6 +1,9 @@
 {
-  "name": "@Pick2Me/shared",
+ "name": "@retro-routes/shared",
   "version": "1.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Shared library for Pick2Me microservices",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -11,16 +11,19 @@ export const ROUTING_KEYS = {
   // BOOKING_CANCELLED: 'booking.cancelled',
   // PAYMENT_SUCCESS: 'payment.success',
   // PAYMENT_FAILED: 'payment.failed',
+  // RESPONSE_RIDE_REQUEST: 'realtime-booking.ride.request.response',
 
   RIDE_ACCEPTED: 'realtime-booking.ride.accepted',
+  RIDE_COMPLETED: 'booking-realtime.ride.completed',
   CANCEL_RIDE:'realtime-booking.ride.status.cancel',
-  // RESPONSE_RIDE_REQUEST: 'realtime-booking.ride.request.response',
   UPDATE_DRIVER_RIDE_COUNT: "realtime-driver.ride.status.update",
+
   
   NOTIFY_BOOK_RIDE_DRIVER: 'booking-realtime.booked.ride',
   NOTIFY_RIDE_COMPLETED: 'booking-realtime.ride.completed',
   NOTIFY_RIDE_START: 'booking-realtime.ride.start',
-
+  MARK_PAYMENT_COMPLETED:'payment-booking.payment.completed',
+  UPDATE_DRIVER_EARNINGS:'payment-driver.payment.completed',
   NOTIFY_DOCUMENT_EXPIRE:'driver-realtime.document.expire',
 
   USER_WALLET_CREATE: 'user-payment.wallet.create',

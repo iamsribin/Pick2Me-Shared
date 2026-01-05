@@ -3,6 +3,7 @@ export const GEO_KEY_RIDE = "rideDrivers:geo:";
 export const HEARTBEAT_PREFIX = "driver:heartbeat:";
 export const ONLINE_DRIVER_DETAILS_PREFIX = ":onlineDriver:details:";
 export const IN_RIDE_HEARTBEAT_PREFIX = 'driver:inride:heartbeat:'
+export const IN_RIDE_HEARTBEAT_PREFIX_DATA = 'driver:inride:heartbeat:data:'
 // export const RIDE_DRIVER_DETAILS_PREFIX = ":rideDriver:details:";
 // export const BOOKING_REQUEST_PREFIX = "booking:request:";
 // export const DRIVER_REQUEST_PREFIX = "driver:request:";

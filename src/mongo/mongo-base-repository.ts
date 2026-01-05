@@ -19,9 +19,11 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
     }
   }
 
-  async findOne(filter: FilterQuery<T>): Promise<T | null> {
+  async findOne(filter: FilterQuery<T>, options?: {
+    sort?: Record<string, 1 | -1>;
+  }): Promise<T | null> {
     try {
-      return await this._model.findOne(filter).exec();
+      return this._model.findOne(filter, null, options).exec();
     } catch (error) {
       throw error
     }
@@ -46,15 +48,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
     }
   }
 
-  async update(id: string, update: UpdateQuery<T>): Promise<T | null> {
-    try {
-      return await this._model.findByIdAndUpdate(id, update, { new: true }).exec();
-    } catch (error) {
-      console.error('Error in update:', error);
-      throw error
-    }
-  }
-
+  
   async delete(id: string): Promise<boolean> {
     try {
       const result = await this._model.findByIdAndDelete(id).exec();
@@ -64,7 +58,7 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
       throw error
     }
   }
-
+  
   async findMany(filter: FilterQuery<T> = {}, projection = ''): Promise<T[] | null> {
     try {
       return await this._model.find(filter, projection).lean<T[]>().exec();
@@ -74,23 +68,38 @@ export class MongoBaseRepository<T extends Document> implements IMongoBaseReposi
     }
   }
 
-  async updateOne(filter: FilterQuery<T>, update: UpdateQuery<T>): Promise<T | null> {
-    try {
-      return await this._model.findOneAndUpdate(filter, update, { new: true }).lean<T>().exec();
-    } catch (error) {
-      console.error('Error in updateOne:', error);
-      throw error
-    }
-  }
 
-  async findOneAndUpdateUpsert(filter: FilterQuery<T>, update: UpdateQuery<T>, options: any = { new: true, upsert: true }): Promise<T | null> {
+async update(id: string, update: UpdateQuery<T>, options: any = {}): Promise<T | null> {
   try {
-    return await this._model.findOneAndUpdate(filter, update, options).lean<T>().exec();
+    return await this._model.findByIdAndUpdate(id, update, { new: true, ...options }).lean<T>().exec();
+  } catch (error) {
+    console.error('Error in update:', error);
+    throw error;
+  }
+}
+
+async updateOne(filter: FilterQuery<T>, update: UpdateQuery<T>, options: any = {}): Promise<T | null> {
+  try {
+    return await this._model.findOneAndUpdate(filter, update, { new: true, ...options }).lean<T>().exec();
+  } catch (error) {
+    console.error('Error in updateOne:', error);
+    throw error;
+  }
+}
+
+async findOneAndUpdateUpsert(
+  filter: FilterQuery<T>,
+  update: UpdateQuery<T>,
+  options: any = { new: true, upsert: true }
+): Promise<T | null> {
+  try {
+    return await this._model.findOneAndUpdate(filter, update, { new: true, upsert: true, ...options }).lean<T>().exec();
   } catch (error) {
     console.error('Error in findOneAndUpdateUpsert:', error);
     throw error;
   }
 }
+
 
   async deleteOne(filter: FilterQuery<T>): Promise<boolean> {
     try {

@@ -4,6 +4,7 @@ import {
   GEO_KEY_RIDE,
   HEARTBEAT_PREFIX,
   IN_RIDE_HEARTBEAT_PREFIX,
+  IN_RIDE_HEARTBEAT_PREFIX_DATA,
   ONLINE_DRIVER_DETAILS_PREFIX,
 } from "../constants/redis-keys";
 import {
@@ -103,26 +104,39 @@ export class RedisService {
     ttl = 120,
     inRide = false,
     payload?: Record<string, any>
-  ): Promise<void> {
-    const key = this.getHeartbeatKey(driverId, inRide);
-    const value = payload ? JSON.stringify(payload) : "1";
-    await this.redis.set(key, value, "EX", ttl);
+  ) {
+    await this.redis.set(
+      this.getHeartbeatKey(driverId, inRide),
+      "1",
+      "EX",
+      ttl
+    );
+    if (inRide && payload) {
+      const heartbeatKey = `${IN_RIDE_HEARTBEAT_PREFIX_DATA}${driverId}`;
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setHours(24, 0, 0, 0);
+
+      const ttl = Math.floor((midnight.getTime() - now.getTime()) / 1000);
+
+      await this.redis.set(
+        heartbeatKey,
+        JSON.stringify(payload),
+        'EX',
+        ttl
+      );
+    }
   }
 
-  public async getHeartbeat(
-    driverId: string,
-    inRide = false
-  ): Promise<any | null> {
-    const key = this.getHeartbeatKey(driverId, inRide);
-    const raw = await this.redis.get(key);
-    if (!raw) return null;
-    if (raw === "1") return { raw: "1" };
-    try {
-      return JSON.parse(raw);
-    } catch (err) {
-      // If parsing fails, return raw string (defensive)
-      return { raw };
+  public async getRideData(driverId: string) {
+    const payloadKey = `${IN_RIDE_HEARTBEAT_PREFIX_DATA}${driverId}`;
+
+    const data = await this.redis.hgetall(payloadKey);
+
+    if (Object.keys(data).length === 0) {
+      return null;
     }
+    return data
   }
 
   public async checkHeartbeat(driverId: string, inRide = false) {

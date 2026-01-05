@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { JwtPayload } from "jsonwebtoken";
 
-import { InternalError } from "../errors";
+import { InternalError } from "../errors/index.js";
 
 export type AccessPayload = JwtPayload & {
   id: string;

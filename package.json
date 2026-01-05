@@ -1,5 +1,5 @@
 {
-  "name": "@retro-routes/shared",
+  "name": "@pick2me/shared",
   "version": "1.0.3",
   "publishConfig": {
     "access": "public"

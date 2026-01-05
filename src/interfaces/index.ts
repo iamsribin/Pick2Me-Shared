@@ -1,5 +1,5 @@
 
-export * from "./common-response"
-export * from "./common-types"
-export * from "./status-code"
-export * from "./rabbit-event-types"
+export * from "./common-response.js"
+export * from "./common-types.js"
+export * from "./status-code.js"
+export * from "./rabbit-event-types.js"

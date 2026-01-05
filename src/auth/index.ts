@@ -1,3 +1,3 @@
-export * from "./verifyGatewayJwt";
-export type { AccessPayload } from "./types";
-export * from "./auth";
+export * from "./verifyGatewayJwt.js";
+export type { AccessPayload } from "./types.js";
+export * from "./auth.js";

@@ -1,4 +1,4 @@
-import { RedisService } from "./RedisService";
+import { RedisService } from "./RedisService.js";
 
 export function createRedisService(redisUrl: string) {
   return RedisService.init(redisUrl);

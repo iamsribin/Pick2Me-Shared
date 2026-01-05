@@ -1,5 +1,5 @@
 import { Channel } from 'amqplib';
-import { buildQueueNames } from './rabbitmq.config';
+import { buildQueueNames } from './rabbitmq.config.js';
 
 export async function setupQueueWithDLQ(
   channel: Channel,

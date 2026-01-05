@@ -1,6 +1,6 @@
-import { HttpError } from './HttpError';
-export * from './HttpError';
-export * from './errorHandler';
+import { HttpError } from './HttpError.js';
+export * from './HttpError.js';
+export * from './errorHandler.js';
 
 export const BadRequestError = (message = 'Bad request', opts?: any) =>
   new HttpError(400, message, { code: 'BAD_REQUEST', ...opts });

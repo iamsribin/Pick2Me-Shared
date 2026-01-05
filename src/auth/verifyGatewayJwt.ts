@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-import { AccessPayload } from "./types";
-import { IRole } from "../interfaces/common-types";
+import { AccessPayload } from "./types.js";
+import { IRole } from "../interfaces/common-types.js";
 
 declare global {
   namespace Express {

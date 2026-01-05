@@ -1,2 +1,2 @@
-export * from "./client"
-export * from "./RedisService"
+export * from "./client.js"
+export * from "./RedisService.js"

@@ -1,5 +1,5 @@
 
 
-export * from "./rabbitmq.config"
-export * from "./rabbitmq.utils"
-export * from "./rabbitmq"
+export * from "./rabbitmq.config.js"
+export * from "./rabbitmq.utils.js"
+export * from "./rabbitmq.js"

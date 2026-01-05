@@ -1,4 +1,4 @@
 
-export * from "./i-mongo-base-repository";
-export * from "./mongo-base-repository";
-export * from "./connection";
+export * from "./i-mongo-base-repository.js";
+export * from "./mongo-base-repository.js";
+export * from "./connection.js";

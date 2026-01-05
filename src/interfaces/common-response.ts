@@ -1,4 +1,4 @@
-import { StatusCode } from "./status-code";
+import { StatusCode } from "./status-code.js";
 
 export interface commonRes{
   status:StatusCode,

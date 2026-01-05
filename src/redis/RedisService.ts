@@ -1,4 +1,6 @@
 import Redis from "ioredis";
+import type { Redis as RedisClient } from "ioredis";
+
 import {
   GEO_KEY,
   GEO_KEY_RIDE,
@@ -6,20 +8,20 @@ import {
   IN_RIDE_HEARTBEAT_PREFIX,
   IN_RIDE_HEARTBEAT_PREFIX_DATA,
   ONLINE_DRIVER_DETAILS_PREFIX,
-} from "../constants/redis-keys";
+} from "../constants/redis-keys.js";
 import {
   Coordinates,
   NearbyDriver,
   OnlineDriverDetails,
-} from "../interfaces/common-types";
+} from "../interfaces/common-types.js";
 
 export class RedisService {
   private static instance: RedisService | null = null;
-  private redis: Redis;
+  private redis: RedisClient;
 
-  private constructor(redisClient: Redis) {
+  private constructor(redisClient: RedisClient) {
     this.redis = redisClient;
-    this.redis.on("error", (err) => {
+    this.redis.on("error", (err: any) => {
       console.error("Redis error:", err);
     });
   }
@@ -31,8 +33,8 @@ export class RedisService {
         "REDIS_URL is not set. Provide url to RedisService.init(url)."
       );
     }
-    const client = new Redis(url);
-    this.instance = new RedisService(client);
+    const RedisCtor = Redis as unknown as new (url: string) => RedisClient;
+    const client = new RedisCtor(url); this.instance = new RedisService(client);
     return this.instance;
   }
 

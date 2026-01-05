@@ -1,5 +1,5 @@
 import amqp, { Connection, Channel, ConsumeMessage } from 'amqplib';
-import { setupQueueWithDLQ } from './rabbitmq.utils';
+import { setupQueueWithDLQ } from './rabbitmq.utils.js';
 
 interface RabbitConfig {
   url: string;

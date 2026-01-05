@@ -1,6 +1,6 @@
 import { DeepPartial, Repository, DataSource, ObjectLiteral } from "typeorm";
 import { injectable } from "inversify";
-import { ISqlBaseRepository } from "./i-sql-base-repository";
+import { ISqlBaseRepository } from "./i-sql-base-repository.js";
 
 @injectable()
 export class SqlBaseRepository<T extends ObjectLiteral> implements ISqlBaseRepository<T> {

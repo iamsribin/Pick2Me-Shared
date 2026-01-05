@@ -1,122 +1,119 @@
 {
  "name": "@retro-routes/shared",
-  "version": "1.0.1",
-  "publishConfig": {
-    "access": "public"
+ "version": "1.0.2",
+ "publishConfig": {
+  "access": "public"
+ },
+ "description": "Shared library for Pick2Me microservices",
+ "main": "dist/index.js",
+ "types": "dist/index.d.ts",
+ "files": [
+  "dist",
+  "README.md"
+ ],
+ "exports": {
+  ".": {
+   "types": "./dist/index.d.ts",
+   "import": "./dist/index.js"
   },
-  "description": "Shared library for Pick2Me microservices",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./auth": {
-      "types": "./dist/auth/index.d.ts",
-      "import": "./dist/auth/index.js"
-    },
-    "./constants": {
-      "types": "./dist/constants/index.d.ts",
-      "import": "./dist/constants/index.js"
-    },
-    "./errors": {
-      "types": "./dist/errors/index.d.ts",
-      "import": "./dist/errors/index.js"
-    },
-    "./interfaces": {
-      "types": "./dist/interfaces/index.d.ts",
-      "import": "./dist/interfaces/index.js"
-    },
-    "./messaging": {
-      "types": "./dist/messaging/index.d.ts",
-      "import": "./dist/messaging/index.js"
-    },
-    "./mongo": {
-      "types": "./dist/mongo/index.d.ts",
-      "import": "./dist/mongo/index.js"
-    },
-    "./protos": {
-      "types": "./dist/protos/index.d.ts",
-      "import": "./dist/protos/index.js"
-    },
-    "./redis": {
-      "types": "./dist/redis/index.d.ts",
-      "import": "./dist/redis/index.js"
-    },
-    "./sql": {
-      "types": "./dist/sql/index.d.ts",
-      "import": "./dist/sql/index.js"
-    },
-    "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js"
-    }
+  "./auth": {
+   "types": "./dist/auth/index.d.ts",
+   "import": "./dist/auth/index.js"
   },
-  "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.json && cpx \"src/protos/**/*\" dist/protos",
-    "clean": "rimraf dist",
-    "prepare": "npm run build"
+  "./constants": {
+   "types": "./dist/constants/index.d.ts",
+   "import": "./dist/constants/index.js"
   },
-  "publishConfig": {
-    "access": "public"
+  "./errors": {
+   "types": "./dist/errors/index.d.ts",
+   "import": "./dist/errors/index.js"
   },
-  "author": "Sribin",
-  "license": "ISC",
-  "type": "module",
-  "devDependencies": {
-    "@types/amqplib": "^0.10.8",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/express": "^5.0.5",
-    "@types/jsonwebtoken": "^9.0.10",
-    "cpx": "^1.5.0",
-    "rimraf": "^5.0.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+  "./interfaces": {
+   "types": "./dist/interfaces/index.d.ts",
+   "import": "./dist/interfaces/index.js"
   },
-  "dependencies": {
-    "bcryptjs": "^3.0.2",
-    "dotenv": "^17.2.3",
-    "jsonwebtoken": "^9.0.2"
+  "./messaging": {
+   "types": "./dist/messaging/index.d.ts",
+   "import": "./dist/messaging/index.js"
   },
-  "peerDependencies": {
-    "@grpc/grpc-js": "^1.14.0",
-    "@grpc/proto-loader": "^0.8.0",
-    "amqplib": "^0.10.9",
-    "express": "^5.1.0",
-    "inversify": "^7.10.4",
-    "ioredis": "^5.8.2",
-    "mongoose": "^8.19.2",
-    "typeorm": "^0.3.27"
+  "./mongo": {
+   "types": "./dist/mongo/index.d.ts",
+   "import": "./dist/mongo/index.js"
   },
-  "peerDependenciesMeta": {
-    "@grpc/grpc-js": {
-      "optional": true
-    },
-    "@grpc/proto-loader": {
-      "optional": true
-    },
-    "amqplib": {
-      "optional": true
-    },
-    "inversify": {
-      "optional": true
-    },
-    "ioredis": {
-      "optional": true
-    },
-    "mongoose": {
-      "optional": true
-    },
-    "typeorm": {
-      "optional": true
-    },
-    "express": {
-      "optional": true
-    }
+  "./protos": {
+   "types": "./dist/protos/index.d.ts",
+   "import": "./dist/protos/index.js"
+  },
+  "./redis": {
+   "types": "./dist/redis/index.d.ts",
+   "import": "./dist/redis/index.js"
+  },
+  "./sql": {
+   "types": "./dist/sql/index.d.ts",
+   "import": "./dist/sql/index.js"
+  },
+  "./utils": {
+   "types": "./dist/utils/index.d.ts",
+   "import": "./dist/utils/index.js"
   }
+ },
+ "scripts": {
+  "build": "npm run clean && tsc -p tsconfig.json && cpx \"src/protos/**/*\" dist/protos",
+  "clean": "rimraf dist",
+  "prepare": "npm run build"
+ },
+ "author": "Sribin",
+ "license": "ISC",
+ "type": "module",
+ "devDependencies": {
+  "@types/amqplib": "^0.10.8",
+  "@types/bcryptjs": "^2.4.6",
+  "@types/express": "^5.0.5",
+  "@types/jsonwebtoken": "^9.0.10",
+  "cpx": "^1.5.0",
+  "rimraf": "^5.0.0",
+  "ts-node": "^10.9.2",
+  "typescript": "^5.9.3"
+ },
+ "dependencies": {
+  "bcryptjs": "^3.0.2",
+  "dotenv": "^17.2.3",
+  "jsonwebtoken": "^9.0.2"
+ },
+ "peerDependencies": {
+  "@grpc/grpc-js": "^1.14.0",
+  "@grpc/proto-loader": "^0.8.0",
+  "amqplib": "^0.10.9",
+  "express": "^5.1.0",
+  "inversify": "^7.10.4",
+  "ioredis": "^5.8.2",
+  "mongoose": "^8.19.2",
+  "typeorm": "^0.3.27"
+ },
+ "peerDependenciesMeta": {
+  "@grpc/grpc-js": {
+   "optional": true
+  },
+  "@grpc/proto-loader": {
+   "optional": true
+  },
+  "amqplib": {
+   "optional": true
+  },
+  "inversify": {
+   "optional": true
+  },
+  "ioredis": {
+   "optional": true
+  },
+  "mongoose": {
+   "optional": true
+  },
+  "typeorm": {
+   "optional": true
+  },
+  "express": {
+   "optional": true
+  }
+ }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@retro-routes/shared",
-  "version": "1.0.2",
+  "version": "1.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -61,6 +61,9 @@
     "build": "npm run clean && tsc -p tsconfig.json && cpx \"src/protos/**/*\" dist/protos",
     "clean": "rimraf dist",
     "prepare": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Sribin",
   "license": "ISC",
